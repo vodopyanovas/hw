@@ -47,7 +47,7 @@ while run_game == 1:
     print ('\n{0}, за игру вы дали правильных ответов: {1} из {2}'.format(name, right_answers,len(questions)))
     now = datetime.strftime(datetime.now(), "%d.%m.%Y %H:%M:%S")
     log.write('\n')	
-    log.write(now + ' Right answers: ' + str(right_answers) + ' of 7\n')
+    log.write(now + ' Right answers: ' + str(right_answers) + ' of '+ str(len(questions)) + '\n')
     log.write('______________________________________________________________________\n')
     
     gameover = input ('Для повторения игры нажмите 1, для выхода - 0 \n > ')
