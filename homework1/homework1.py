@@ -7,7 +7,7 @@ from datetime import datetime
 questions = ['Какой тип данных у чисел с плавающей точкой в Python?','Какую систему контроля версий мы используем?',
 'Какой язык программирования мы изучаем?','Функция определения размера строки?','Команда вывода текста на экран?',
 'Какое значение будет у переменной x, после выполения операции x=5//2 (в Python 3,5)?',
-'Как называется переменная, областью видимости которой является вся программа?']
+'Как называется переменная, областью видимости которой является весь модуль программы?']
 answers = ['float','git','python','len','print','2','global']
 
 log = open('log.txt', 'a')
@@ -24,7 +24,7 @@ run_game = 1
 while run_game == 1:
     question_num = 0
     right_answers = 0
-    while question_num < 7:
+    while question_num < len(questions):
         print (questions[question_num])    
         usr_answer = input ('> ') 
         usr_answer = usr_answer.lower()
@@ -44,7 +44,7 @@ while run_game == 1:
         question_num += 1        
     # конец игры, подведение результатов
     run_game = 0 
-    print ('\n{0}, за игру вы дали правильных ответов: {1} из 7'.format(name, right_answers))
+    print ('\n{0}, за игру вы дали правильных ответов: {1} из {2}'.format(name, right_answers,len(questions)))
     now = datetime.strftime(datetime.now(), "%d.%m.%Y %H:%M:%S")
     log.write('\n')	
     log.write(now + ' Right answers: ' + str(right_answers) + ' of 7\n')
@@ -57,9 +57,11 @@ while run_game == 1:
     	run_game = 1
     elif gameover == '0':
         print ('\nСпасибо за игру!')
+        log.close()
         break
     else:
     	print ('Нормально же попросил, ну! Не буду с тобой играть!')
+    	log.close()
     
 
 
