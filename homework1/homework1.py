@@ -3,14 +3,26 @@ __author__ =    "Vodopyanov Anton"
 
 import sys
 from datetime import datetime
-
+'''
 questions = ['Какой тип данных у чисел с плавающей точкой в Python?','Какую систему контроля версий мы используем?',
 'Какой язык программирования мы изучаем?','Функция определения размера строки?','Команда вывода текста на экран?',
 'Какое значение будет у переменной x, после выполения операции x=5//2 (в Python 3,5)?',
 'Как называется переменная, областью видимости которой является весь модуль программы?']
 answers = ['float','git','python','len','print','2','global']
-
+'''
 log = open('log.txt', 'a')
+quest_file = open('questions.txt', 'r',encoding='utf-8')
+
+questions = []
+answers = []
+
+for line in quest_file: 
+    a = line.rstrip()
+    text = a.split(';;;')
+    questions.append(text[0])
+    answers.append(text[1])   
+
+quest_file.close()
 
 name = input ('Привет! Это небольшая викторина по пройденной теме. Для начала игры введи своё имя \n> ')
 now = datetime.strftime(datetime.now(), "%d.%m.%Y %H:%M:%S")
