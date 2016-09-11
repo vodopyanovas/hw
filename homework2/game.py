@@ -4,6 +4,10 @@
 # https://docs.python.org/3/library/random.html#random.shuffle
 import random
 
+# `msvcrt` module is used for handling user's input
+# https://docs.python.org/3/library/msvcrt.html
+import msvcrt
+
 
 # Empty tile, there's only one empty cell on a field:
 EMPTY_MARK = 'X'
@@ -75,7 +79,13 @@ def handle_user_input():
         'd' - right
     :return: <str> current move.
     """
-    pass
+    while True:
+        key = ord(msvcrt.getch())
+        k=chr(key)
+        if k in MOVES.keys():
+            return str((MOVES[k]))
+        else:
+            print('Use only w,a,s,d buttons for moving')
 
 
 def main():
@@ -92,3 +102,6 @@ if __name__ == '__main__':
     # http://stackoverflow.com/questions/419163/what-does-if-name-main-do
 
     main()
+    
+    
+    
