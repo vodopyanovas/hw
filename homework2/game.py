@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+__author__ = 'Anton Vodopyanov'
+
 # `random` module is used to shuffle field, see§:
 # https://docs.python.org/3/library/random.html#random.shuffle
 import random
@@ -130,13 +132,16 @@ def main():
     It also calls other methods.
     :return: None
     """
-    field = shuffle_field()
+    field = shuffle_field()    
     print_field(field)
-    while is_game_finished(field) == False:
+    steps = 0
+    while is_game_finished(field) == False:        
         user_input = handle_user_input()
         move = perform_move(field, user_input)
         print_field(move)
         field = move
+        steps += 1
+    print('Steps per game: {}'.format(steps))
 
 
 
