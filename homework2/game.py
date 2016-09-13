@@ -9,6 +9,7 @@ import random
 # `msvcrt` module is used for handling user's input
 # https://docs.python.org/3/library/msvcrt.html
 import msvcrt
+import os
 
 
 # Empty tile, there's only one empty cell on a field:
@@ -75,34 +76,42 @@ def perform_move(field, key):
     :return: new field state (after the move). -> print_field(field)
     :raises: IndexError if the move can't me done.
     """
+    
     cant_left=[0,4,8,12]
     cant_right=[3,7,11,15]
     cant_up=[0,1,2,3]
     cant_down=[12,13,14,15]
     f1 = field
     f2 =[ ]
-    index_x = f1.index('X')    
-    delta = index_x+int(key)
-
-    if index_x in cant_left and int(key)== -1:
-        print('Can\'t move left\a')
-        return f1
-    elif index_x in cant_right and int(key)== 1:
-        print('Can\'t move right\a')
-        return f1
-    elif index_x in cant_up and int(key)== -4:
-        print('Can\'t move up\a')
-        return f1
-    elif index_x in cant_down and int(key)== 4:
-        print('Can\'t move down\a')
-        return f1
-    else:
-        f2=f1.copy()
-        f2.pop(index_x)
-        f2.insert(index_x, f1[delta])  
-        f2.pop(delta)
-        f2.insert(delta, f1[index_x])
-        return f2
+    index_x = f1.index('X')
+    try:    
+        delta = index_x+int(key)
+        if index_x in cant_left and int(key)== -1:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('\nCan\'t move left\a')
+            return f1
+        elif index_x in cant_right and int(key)== 1:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('\nCan\'t move right\a')
+            return f1
+        elif index_x in cant_up and int(key)== -4:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('\nCan\'t move up\a')
+            return f1
+        elif index_x in cant_down and int(key)== 4:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('\nCan\'t move down\a')
+            return f1
+        else:
+            f2=f1.copy()
+            f2.pop(index_x)
+            f2.insert(index_x, f1[delta])  
+            f2.pop(delta)
+            f2.insert(delta, f1[index_x])
+            os.system('cls' if os.name == 'nt' else 'clear') 
+            return f2
+    except ValueError:
+        print('Bad parameter!')
 
 
 def handle_user_input():
@@ -132,12 +141,14 @@ def main():
     It also calls other methods.
     :return: None
     """
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('\nUse only w,a,s,d buttons for moving. For exit the game press Ctrl+Break.')
     field = shuffle_field()    
     print_field(field)
     steps = 0
-    while is_game_finished(field) == False:        
+    while is_game_finished(field) == False:               
         user_input = handle_user_input()
-        move = perform_move(field, user_input)
+        move = perform_move(field, user_input)        
         print_field(move)
         field = move
         steps += 1
