@@ -8,7 +8,7 @@ If you want to create a new command it should be placed here.
 from __future__ import print_function
 
 import sys
-import inspect
+#import inspect
 import json
 
 # import custom_exceptions
@@ -99,21 +99,22 @@ class NewCommand(BaseCommand):
         while True:
             try:
                 selection = int(input_function('Input number: '))
+                selected_key = list(classes.keys())[selection]
+                selected_class = classes[selected_key]
+                print('Selected: {}'.format(selected_class.__name__))
+                print()
+
+                new_object = selected_class.construct()
+
+                objects.append(new_object)
+                print('Added {}'.format(str(new_object)))
+                print()
+                return new_object
                 break
             except ValueError:
                 print('Bad input, try again.')
-
-        selected_key = list(classes.keys())[selection]
-        selected_class = classes[selected_key]
-        print('Selected: {}'.format(selected_class.__name__))
-        print()
-
-        new_object = selected_class.construct()
-
-        objects.append(new_object)
-        print('Added {}'.format(str(new_object)))
-        print()
-        return new_object
+            except IndexError:
+                print('Are you a blind?')
 
 
 class ExitCommand(BaseCommand):
@@ -172,7 +173,7 @@ class UndoneCommand(BaseCommand):
             return 
         else:            
             for index, obj in enumerate(objects_list):
-                if obj.done == False:                    
+                if obj.done == True:                    
                     print('{}: {}'.format(index, str(obj)))                                         
 
         input_function = get_input_function()
@@ -189,17 +190,24 @@ class UndoneCommand(BaseCommand):
                 print('Bad input, try again.')
             except IndexError:
                 print('Are you a blind?')
+        
 
-        #selected_key = objects_list[selection]        
-        #selected_key.done = True         
-         
-        #print(selected_key)
 
-"""
 class SaveCommand(BaseCommand):
     @staticmethod
     def label():
-        return 'save'
-    
-    #def perform(self, objects, *args, **kwargs):
-"""
+        return 'save'    
+
+    def perform(self, objects, *args, **kwargs): 
+        for index, obj in enumerate(objects):
+            f = open('ToDoList.txt','a')
+            if len(objects) == 0:
+                print('There are no items in storage.')
+                return
+            else:
+                a=('{}: {}'.format(index, str(obj)))
+                json.dump(a, f)
+                f.write('\n')
+        f.close()
+
+        

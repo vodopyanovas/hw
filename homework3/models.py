@@ -104,5 +104,3 @@ class ToReadItem(BaseItem):
         heading = input_function('Input heading: ')
         writer = input_function('Input writer\'s name: ')
         return ToReadItem(heading, writer)
-
-
