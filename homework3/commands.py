@@ -131,17 +131,16 @@ class DoneCommand(BaseCommand):
         return 'done'
 
     def perform(self, objects, *args, **kwargs):  
-        l = [] 
+        
+        objects_list = [obj for obj in objects if obj.done == False]         
 
-        if len(objects) == 0:
+        if len(objects_list) == 0:
             print('There are no undone items.')
             return 
         else:            
-            for index, obj in enumerate(objects):
+            for index, obj in enumerate(objects_list):
                 if obj.done == False:                    
-                    l.append(obj)                
-                    print('{}: {}'.format(index, obj))
-                                         
+                    print('{}: {}'.format(index, str(obj)))                                         
 
         input_function = get_input_function()
         selection = None
@@ -149,14 +148,14 @@ class DoneCommand(BaseCommand):
         while True:
             try:
                 selection = int(input_function('Input number to mark done: '))
+                selected_key = objects_list[selection]        
+                selected_key.done = True
+                print(selected_key)
                 break
             except ValueError:
                 print('Bad input, try again.')
-
-        selected_key = l[selection]        
-        selected_key.done = True         
-         
-        print(selected_key)      
+            except IndexError:
+                print('Are you a blind?')
 
 
 class UndoneCommand(BaseCommand):
@@ -164,33 +163,37 @@ class UndoneCommand(BaseCommand):
     def label():
         return 'undone'
 
-    def perform(self, objects, *args, **kwargs):
-        l = [] 
+    def perform(self, objects, *args, **kwargs):  
+        
+        objects_list = [obj for obj in objects if obj.done == True]         
 
-        if len(objects) == 0:
+        if len(objects_list) == 0:
             print('There are no done items.')
             return 
         else:            
-            for index, obj in enumerate(objects):
-                if obj.done == True:                    
-                    l.append(obj)                
-                    print('{}: {}'.format(index, obj))
-        
+            for index, obj in enumerate(objects_list):
+                if obj.done == False:                    
+                    print('{}: {}'.format(index, str(obj)))                                         
+
         input_function = get_input_function()
         selection = None
 
         while True:
             try:
                 selection = int(input_function('Input number to mark undone: '))
+                selected_key = objects_list[selection]        
+                selected_key.done = False
+                print(selected_key)
                 break
             except ValueError:
                 print('Bad input, try again.')
+            except IndexError:
+                print('Are you a blind?')
 
-        selected_key = l[selection]
-        
-        selected_key.done = False
-        index -= 1
-        print(selected_key) 
+        #selected_key = objects_list[selection]        
+        #selected_key.done = True         
+         
+        #print(selected_key)
 
 """
 class SaveCommand(BaseCommand):
