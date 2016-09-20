@@ -10,6 +10,7 @@ import inspect
 import sys
 
 from commands import (
+    BaseCommand,
     ListCommand,
     NewCommand,
     ExitCommand,
@@ -33,26 +34,26 @@ def get_routes():
     """
 
     # Dynamic load:
-    # def class_filter(klass):
-    #     return inspect.isclass(klass) \
-    #            and klass.__module__ == BaseCommand.__module__ \
-    #            and issubclass(klass, BaseCommand) \
-    #            and klass is not BaseCommand
-    #
-    # routes = inspect.getmembers(
-    #     sys.modules[BaseCommand.__module__],
-    #     class_filter
-    # )
-    # return dict((route.label(), route) for _, route in routes)
+    def class_filter(klass):
+        return inspect.isclass(klass) \
+               and klass.__module__ == BaseCommand.__module__ \
+               and issubclass(klass, BaseCommand) \
+               and klass is not BaseCommand
+    
+    routes = inspect.getmembers(
+        sys.modules[BaseCommand.__module__],
+        class_filter
+    )
+    return dict((route.label(), route) for _, route in routes)
 
-    return {
-        ListCommand.label(): ListCommand,
-        NewCommand.label(): NewCommand,
-        ExitCommand.label(): ExitCommand,
-        DoneCommand.label(): DoneCommand,
-        UndoneCommand.label(): UndoneCommand,
-        SaveCommand.label(): SaveCommand
-    }
+    # return {
+    #     ListCommand.label(): ListCommand,
+    #     NewCommand.label(): NewCommand,
+    #     ExitCommand.label(): ExitCommand,
+    #     DoneCommand.label(): DoneCommand,
+    #     UndoneCommand.label(): UndoneCommand,
+    #     SaveCommand.label(): SaveCommand
+    # }
 
 
 def perform_command(command):
@@ -91,11 +92,14 @@ def parse_user_input():
     return input_function(message)
 
 
+
 def main():
     """
     Main method, works infinitelly until user runs `exit` command.
     Or hits `Ctrl+C` in the console.
     """
+    load=SaveCommand()
+    load.load_items()
 
     while True:
         try:

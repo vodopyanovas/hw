@@ -20,3 +20,5 @@ def get_input_function():
         input_function = input
 
     return input_function
+
+
