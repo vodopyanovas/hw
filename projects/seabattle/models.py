@@ -28,33 +28,50 @@ class Field (object):
     def __init__(self, name):
         self.name = name 
 
-    def print_field(self):
-        cells1 = []
-        #cells2 = []     
-        #cache_list = [] # потом это будет список выстрелов
-        [cells1.append(i) for i in range(100)]
-        #[cells2.append(i) for i in range(self.FIELD_RANGE)]
+    def print_field(self, ships):
+        def update_field(ships):
+            #cache_list = []
+            n = 0
+            print('\n')
+            for i in ships:    
+                print('{row:>2}'.format(row=str(i)), end = ' ')
+                n += 1
+                #cache_list.append(str(i))
+                if n == 10:
+                    n = 0
+                    print('\n')
+                    # print('\t\t', end ='')                        
+                    # for x in cache_list:                       
+                    #     print('{row:>2}'.format(row=str(x)), end = ' ')
+                    #     n += 1                    
+                    #     if n == 10:                        
+                    #         print('\n')                        
+                    #         n = 0  
+                    #         cache_list.clear()              
+        
+        ship = '[]'
+        indexes = []        
+        [indexes.append(i) for i in range(100)]
+        #[cells2.append(i) for i in range(self.FIELD_RANGE)] - список выстрелов и попаданий
+        
+        for x in ships:
+            indexes.pop(x)
+            indexes.insert(x,ship)
 
-        n = 0
-        print('\n')
+            # indexes.pop(x+9)
+            # indexes.insert(x+9,'\'')            
+            # indexes.pop(x-9)
+            # indexes.insert(x-9,'\'')
+            
+            # indexes.pop(x+11)
+            # indexes.insert(x+11,'\'')            
+            # indexes.pop(x-11)
+            # indexes.insert(x-11,'\'')
 
-        for i in cells1:    
-            print('{row:>2}'.format(row=str(i)), end = ' ')
-            n += 1
-            #cache_list.append(i)
-            if n == 10:
-                n = 0
-                print('\n')
-                # print('\t\t', end ='')                        
-                # for x in cache_list:                       
-                #     print('{row:>2}'.format(row=str(x)), end = ' ')
-                #     n += 1                    
-                #     if n == 10:                        
-                #         print('\n')                        
-                #         n = 0  
-                #         cache_list.clear()              
-        # print(cells1[54+key]) - заглушка
-        return None
+
+        update_field(indexes)     
+
+
 
 # describes ship structure, gets coordinates for placing ships on a game field
 class Ship (object):
@@ -103,7 +120,7 @@ class Ship (object):
                     place = input('Where should we next part of a {}-deck ship?\n> '.format(self.decks)) 
 
                     # проверка влезет/не влезет 
-                    direction = get_direction(place_head, place)                      
+                   # direction = get_direction(place_head, place)                      
                     
                     check = check_row(place,self.coordinates) 
                     self.coordinates.append(int(check))
@@ -138,5 +155,45 @@ class Ship (object):
        
             
 # will contain game logic 
-#class Shoot (object):
+class Shot (object):
+    
+    def __init__(self, ships, shots):
+        self.ships = ships        
+        self.shots = shots
+
+    def make_shoot(self, field):
+
+        def mark_shot(shot_index,shot_result):
+            field.pop(shot_index)
+            field.insert(shot_index,shot_result)
+
+        def get_aim():          
+            aim = input('Where should we shoot sir?\n> ')
+            aim = int(aim)
+            while aim in self.shots:
+                    print('We\'ve already shooted there! Let\'s choose another place to fire sir!')
+                    aim = input('Where to shoot?\n> ')  
+                    aim = int(aim)              
+            self.shots.append(aim)
+            return aim
+
+        aim = get_aim()
+
+        if aim in self.ships:
+            mark_shot(self.shots[-1],shot_result = '*')                         
+            while aim in self.ships:
+                mark_shot(self.shots[-1],shot_result = '*') 
+                print('Hit!')
+                print('Try to kill him now!')   
+                aim = get_aim()
+            mark_shot(self.shots[-1],shot_result = '~')
+            print('Off target!')    
+        else:           
+            mark_shot(self.shots[-1],shot_result = '~')
+            print('Off target!')
+        return field
+
+
+        
+
 
