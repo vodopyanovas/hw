@@ -1,26 +1,33 @@
+# -*- coding: utf-8 -*-
+
+"""
+This module contains all the models we work with.
+"""
+__author__ = 'Anton Vodopyanov'
+
+import os
 #from functions import handle_wasd
 
 # will use this class for storing some information
-class Storage(object):
-    __obj = None
+# class Storage(object):
+#     __obj = None
 
-    players = None
+#     players = None
 
-    @classmethod
-    def __new__(cls, *args):
-        if cls.__obj is None:
-            cls.__obj = object.__new__(cls)
-            cls.items = []
-        return cls.__obj
+#     @classmethod
+#     def __new__(cls, *args):
+#         if cls.__obj is None:
+#             cls.__obj = object.__new__(cls)
+#             cls.items = []
+#         return cls.__obj
 
 # describes player
 class Player(object):
-    def __init__(self, name, queue):
-        self.name = name
-        self.queue = queue
 
-    def __str__(self):
-        return self.name
+    def __init__(self, name, turn):
+        self.name = name
+        self.turn = turn
+
 
 # class creates game field and prints it
 class Field (object):    
@@ -29,6 +36,7 @@ class Field (object):
         self.name = name 
 
     def print_field(self, ships):
+
         def update_field(ships):
             #cache_list = []
             n = 0
@@ -50,28 +58,25 @@ class Field (object):
                     #         cache_list.clear()              
         
         ship = '[]'
-        indexes = []        
-        [indexes.append(i) for i in range(100)]
+        field = []        
+        [field.append(i) for i in range(100)]
         #[cells2.append(i) for i in range(self.FIELD_RANGE)] - список выстрелов и попаданий
         
         for x in ships:
-            indexes.pop(x)
-            indexes.insert(x,ship)
+            field.pop(x)
+            field.insert(x,ship)
 
-            # indexes.pop(x+9)
-            # indexes.insert(x+9,'\'')            
-            # indexes.pop(x-9)
-            # indexes.insert(x-9,'\'')
+            # field.pop(x+9)
+            # field.insert(x+9,'\'')            
+            # field.pop(x-9)
+            # field.insert(x-9,'\'')
             
-            # indexes.pop(x+11)
-            # indexes.insert(x+11,'\'')            
-            # indexes.pop(x-11)
-            # indexes.insert(x-11,'\'')
+            # field.pop(x+11)
+            # field.insert(x+11,'\'')            
+            # field.pop(x-11)
+            # field.insert(x-11,'\'')
 
-
-        update_field(indexes)     
-
-
+        update_field(field)
 
 # describes ship structure, gets coordinates for placing ships on a game field
 class Ship (object):
@@ -79,11 +84,11 @@ class Ship (object):
     def __init__(self, decks, count,coordinates):
         self.decks = decks
         self.count = count
-        self.coordinates = coordinates        
-        
+        self.coordinates = coordinates
 
-    def place_ship(self,):  
-        # getting direction to ...
+    def place_ship(self,player_ships):
+
+        # getting direction  
         def get_direction(head, body):
             head = int(head)
             body = int(body)
@@ -95,64 +100,107 @@ class Ship (object):
                 return 'left'
             elif body == head + 1:
                 return 'right'
+            else:
+                return False                      
 
-        # checking uniqueness of inputed values    
-        def check_row(cell, coordinates):
-            cell = int(cell)
-            while cell in coordinates:
-                print('You can\'t place your ship here. Try to place your ship somewhere else')
-                cell = input('Where should we place head of a ship?\n> ')   
-                #cell = int(cell)
+        # check for "Out of borders"
+        def check_borders(cell,direction):           
+
+            if cell in (9,19,29,39,49,59,69,79,89,99) and direction == 'left':
+                print('You can\'t place ship left')
+                while cell in (9,19,29,39,49,59,69,79,89,99):
+                    cell = input('Out of borders! Try one more time> ')
+                    cell = int(cell)                    
+                return cell
+
+            elif cell in (0,10,20,30,40,50,60,70,80,90) and direction == 'right':
+                print('You can\'t place ship right')
+                while cell in (0,10,20,30,40,50,60,70,80,90):
+                    cell = input('Out of borders! Try one more time> ')
+                    cell = int(cell)                    
+                return cell
+
+            elif cell > 99 or cell < 0:
+                while  cell > 99 or cell < 0:
+                    cell = input('Out of borders! Try one more time> ')
+                    cell = int(cell) 
+                return cell    
+
             return cell
 
-        def get_coorginates(self):             
+        # checking uniqueness of inputed values    
+        def check_uniqueness(cell, coordinates):
+            cell = int(cell)
+            
+            if cell in coordinates:
+                while cell in coordinates:
+                    print('Try to place your ship somewhere else. There is a ship here.')
+                    cell = input('Where should we place a ship?\n> ')   
+                    cell = int(cell)
+            return cell
+
+            # options = {'right':cell+1, 'left':cell-1, 'down':cell+10, 'up':cell-10} - пока не надо
+       
+        # getting coordinates of ships
+        def get_coorginates(self,player_ships):
+
             decks_to_place = self.decks
 
-            if decks_to_place > 1:                
+            if decks_to_place > 1:                         
+                place_head = input('\nWhere should we place head of a {}-deck ship?\n> '.format(self.decks))
+                check = check_uniqueness(place_head,player_ships)
+                check2 = check_borders(check, None)
+                player_ships.append(int(check2))
+                os.system('cls' if os.name == 'nt' else 'clear')
+                Field.print_field(Field, player_ships)
+
+                decks_to_place -= 1
+
+                # дальше задаём координаты окружения корабля - place +-9, 11 - пока не нужно
+
+                while decks_to_place >= 1:
+                    place = input('\nWhere should we place next part of a {}-deck ship?\n> '.format(self.decks)) 
                     
-                place_head = input('Where should we place head of a {}-deck ship?\n> '.format(self.decks))              
-                
-                check = check_row(place_head,self.coordinates)                
-                self.coordinates.append(int(check))
-                # дальше задаём координаты окружения корабля - place +-9, 11
+                    # checking for correct input and placement
+                    direction = get_direction(place_head, place)
+                    if direction != False:                    
+                        check1 = check_uniqueness(place,player_ships)
+                        check2 = check_borders(check1, direction)
+                        player_ships.append(int(check2))
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        Field.print_field(Field, player_ships)
+                        place_head = check2
+                        decks_to_place -= 1
 
-                while decks_to_place > 1:
-                    place = input('Where should we next part of a {}-deck ship?\n> '.format(self.decks)) 
-
-                    # проверка влезет/не влезет 
-                   # direction = get_direction(place_head, place)                      
+                    else :
+                        print('Wrong place! You can\'t place ship here')                        
                     
-                    check = check_row(place,self.coordinates) 
-                    self.coordinates.append(int(check))
-                    # в зависимости от направления дозабиваем окружение
-
-                    decks_to_place -= 1                  
+                    # в зависимости от направления дозабиваем окружение - пока не нужно                                   
                 
-            else:        
+            else:
                 place = input('Where should we place a {}-deck ship?\n> '.format(self.decks)) 
-                check = check_row(place,self.coordinates)             
-                self.coordinates.append(int(check))  
+                check = check_uniqueness(place,player_ships)
+                check2 = check_borders(check, None)
+                player_ships.append(int(check2))
+                os.system('cls' if os.name == 'nt' else 'clear')
+                Field.print_field(Field, player_ships)
 
-            print('\n{}-deck ship has been added'.format(self.decks))
+            print('{}-deck ship has been added'.format(self.decks))
             return self.coordinates
 
-             
         if self.count > 1:
-            ship = get_coorginates(self)            
+            ship = get_coorginates(self,player_ships)
             print('Left to add: {} ships\n'.format(self.count-1))
 
             while self.count > 1:                
-                ship=get_coorginates(self) 
+                ship=get_coorginates(self,player_ships)
                 self.count -=1
-                print('Left to add: {} ships\n'.format(self.count-1))                
+                print('Left to add: {} ships\n'.format(self.count-1))
             return ship
             
         else:
-            ship = get_coorginates(self)
+            ship = get_coorginates(self,player_ships)
             return ship
-
-
-       
             
 # will contain game logic 
 class Shot (object):
@@ -167,7 +215,8 @@ class Shot (object):
             field.pop(shot_index)
             field.insert(shot_index,shot_result)
 
-        def get_aim():          
+        def get_aim():  
+
             aim = input('Where should we shoot sir?\n> ')
             aim = int(aim)
             while aim in self.shots:
@@ -180,6 +229,7 @@ class Shot (object):
         aim = get_aim()
 
         if aim in self.ships:
+
             mark_shot(self.shots[-1],shot_result = '*')                         
             while aim in self.ships:
                 mark_shot(self.shots[-1],shot_result = '*') 
@@ -192,8 +242,3 @@ class Shot (object):
             mark_shot(self.shots[-1],shot_result = '~')
             print('Off target!')
         return field
-
-
-        
-
-
