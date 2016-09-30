@@ -9,15 +9,14 @@ import pickle
 import re
 
 class Journal (object):
-    def __init__(self,):
-        pass
+    def __init__(self, marks):
+        self.marks = marks
         # self.school_class = school_class
 
     # creates a file if it not exist and write pupil's marks there
-    def add_mark(self,result):
-
-        with open('journal.dat', 'ab') as file:
-            pickle.dump(result, file)
+    def add_mark(self,marks):
+        with open('journal.dat', 'wb') as file:
+            pickle.dump(self.marks, file)
 
     # searches particular pupil marks
     def show_marks(self):
@@ -26,12 +25,21 @@ class Journal (object):
     # loads all records from file
     def show_all_marks(self,):
         try:
-            with open('myfile.dat', 'rb') as file:
-                for _ in file:
-                    load = pickle.load(file)
-                    print(load)
-        except (EOFError):
+            with open('journal.dat', 'rb') as file:
+                load = pickle.load(file)
+                print(load)
+        except:
             print('\nNope :(\n\n')
+
+    def load_info(self):
+        try:
+            with open('journal.dat', 'rb') as file:
+                load = pickle.load(file)
+                self.marks.extend(load)
+        except:
+            with open('journal.dat', 'wb') as file:
+                print('The new journal has been created!\n')
+
 
     # input handling : will call a method depanding on user's input
     def input_parcer(self):
@@ -55,7 +63,8 @@ class Journal (object):
         try:
             if command[0][0] == 'add':
                 result = command[0][1:]
-                self.add_mark(result)
+                self.marks.append(list(result))
+                self.add_mark(self.marks)
 
             elif command[0][0] == 'show' and command[0][1] == 'all':
                 self.show_all_marks()
@@ -76,5 +85,6 @@ class Journal (object):
             else:
                 print('Wrong input!')
 
-b7 = Journal()
-b7.input_parcer()
+journal = Journal([])
+journal.load_info()
+journal.input_parcer()
