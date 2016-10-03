@@ -39,7 +39,7 @@ class BlogPostModel(object):
             self.load_list.append(forms_dict)
             json.dump(self.load_list, file)
 
-    def load_file(self):
+    def load_file(self, ):
         try:
             with open('blog.json', 'r') as file:
                 load = json.load(file)
@@ -50,6 +50,7 @@ class BlogPostModel(object):
                     self.text = index.get('text')
                     self.author = index.get('author')
                     self.time_stamp = index.get('time_stamp')
+                    Storage.items.append(self)
         except:
             with open('blog.json', 'w') as file:
                 print('The new file has been created!\n')

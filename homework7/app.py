@@ -26,7 +26,6 @@ def home():
         form = BlogPostForm(request.form)
         if form.validate():
             model = BlogPostModel(form.data)
-            # model.load_file()
             all_items.append(model)
             model.save()
 
