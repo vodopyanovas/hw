@@ -10,7 +10,7 @@ __author__ = 'Anton Vodopyanov'
 class Storage(object):
     items = None
     _obj = None
-    filename = 'blog.json'
+    filename = 'database.json'
 
     @classmethod
     def __new__(cls, *args, **kwargs):
