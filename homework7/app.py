@@ -27,7 +27,7 @@ def home():
         if form.validate():
             model = BlogPostModel(form.data)
             all_items.append(model)
-            model.save()
+            storage.save()
 
         else:
             logger.error('Someone have submitted an incorrect form!')

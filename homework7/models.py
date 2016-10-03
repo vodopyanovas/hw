@@ -10,13 +10,32 @@ __author__ = 'Anton Vodopyanov'
 class Storage(object):
     items = None
     _obj = None
+    filename = 'blog.json'
 
     @classmethod
     def __new__(cls, *args, **kwargs):
         if cls._obj is None:
             cls._obj = object.__new__(cls)
             cls.items = []
+            try:
+                with open(cls.filename, 'r') as file:
+                    cls.items = json.load(file)
+            except:
+                    with open(cls.filename, 'w') as file:
+                        print('The new file has been created!\n')
         return cls._obj
+
+
+    @classmethod
+    def save(cls):
+        if cls.items is None:
+            return
+
+        def json_default(o):
+            return o.__dict__
+
+        with open(cls.filename, 'w') as file:
+            json.dump(cls.items, file, default=json_default)
 
 
 class BlogPostModel(object):
@@ -25,32 +44,4 @@ class BlogPostModel(object):
         self.text = form_data['text']
         self.time_stamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
         self.author = form_data['author']
-        self.load_list = []
 
-    def save(self):
-        with open('blog.json', 'w', encoding = 'utf-8') as file:
-            forms_dict = {
-               'title': self.title,
-               'text': self.text,
-               'time_stamp': self.time_stamp,
-               'author': self.author
-            }
-
-            self.load_list.append(forms_dict)
-            json.dump(self.load_list, file)
-
-    def load_file(self, ):
-        try:
-            with open('blog.json', 'r') as file:
-                load = json.load(file)
-                self.load_list.extend(load)
-
-                for index in self.load_list:
-                    self.title = index.get('title')
-                    self.text = index.get('text')
-                    self.author = index.get('author')
-                    self.time_stamp = index.get('time_stamp')
-                    Storage.items.append(self)
-        except:
-            with open('blog.json', 'w') as file:
-                print('The new file has been created!\n')
