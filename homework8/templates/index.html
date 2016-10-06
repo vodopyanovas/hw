@@ -1,0 +1,16 @@
+{% extends '_base_template.html' %}
+
+{% block content %}
+   <form action="" method="post" name="index">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.text(size=50) }}
+            {% for error in form.errors.text %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}<br>
+        </p>
+
+        <p><input type="submit" value="Get link"> {{ form.download_file }}{{ form.download_file.label }}</p>
+
+    </form>
+{% endblock %}
