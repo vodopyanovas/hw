@@ -6,7 +6,7 @@ class PostModel(object):
         self.text = form_data['text']
 
     def get_qr(self, ):
-        qr_code = qrcode.make('http://127.0.0.1:5000/get_file')
+        qr_code = qrcode.make(self.text)
         return qr_code.save('./tmp/qr.png')
 
     def save_text(self):
