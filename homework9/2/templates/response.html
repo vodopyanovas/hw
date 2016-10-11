@@ -4,7 +4,7 @@
  <div> <a href="/">Back</a> </div>
 <div class="content">
     {% from "macros/render_field.html" import render_field %}
-    <form method="POST" action="{{ url_for('index') }}">
+    <form method="POST" action="{{ url_for('response') }}">
         {{ form.hidden_tag() }}
         <dl>
             {% for field in form %}

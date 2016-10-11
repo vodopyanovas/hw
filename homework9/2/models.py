@@ -12,6 +12,9 @@ class BuyAdvert(db.Model):
     price = db.Column(db.Float(6), nullable=False)
 
     responses = db.relationship('AdvertResponse', backref='posts', lazy='dynamic')
+
+    def __str__(self):
+        return'<Advert %s>' % self.responses
     #
     # def __init__(self, title, price):
     #     self.title = title
@@ -25,6 +28,8 @@ class AdvertResponse(db.Model):
     phone = db.Column(db.String(15), nullable=False)
 
     buyadvert_id = db.Column(db.Integer, db.ForeignKey('buy_advert.id'))
+
+
 
     # def __init__(self, text, phone):
     #     self.text = text

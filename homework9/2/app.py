@@ -18,7 +18,7 @@ db = SQLAlchemy(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
-# @app.route('/index', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     from models import BuyAdvert
 
@@ -46,7 +46,7 @@ def index():
 
     posts = BuyAdvert.query.all()
 
-    return render_template('index.html', form=form, postss=posts)
+    return render_template('index.html', form=form, posts=posts)
 
 
 @app.route('/response', methods=['GET', 'POST'])
@@ -74,7 +74,6 @@ def response():
         form = post_response()
 
     posts = AdvertResponse.query.all()
-
     return render_template('response.html', form=form, posts=posts)
 
 

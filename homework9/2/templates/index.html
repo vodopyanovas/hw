@@ -7,22 +7,15 @@
     <form method="POST" action="{{ url_for('index') }}">
         {{ form.hidden_tag() }}
         <dl>
-            {{ form.title }}
-            {{ form.price }}
-{#            {% for field in form %}#}
-{#                {% if field.id != 'csrf_token' %}#}
-{#                    {{ render_field(field) }}#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
+            {% for field in form %}
+                {% if field.id != 'csrf_token' %}
+                    {{ render_field(field) }}
+                {% endif %}
+            {% endfor %}
         </dl>
-
-
-    </form>
         <input type="submit" value="{{ 'Publish' }}" class="btn">
-
+    </form>
         <div> <a href="/response">To Responses</a> </div>
-
-
 
     <div class="posts">
         {% for item in posts %}
@@ -32,8 +25,8 @@
                 </h3>
             </div>
                 <div class="post-text">
-                    Price: {{ item.price }}
-                    {{ form.responses }}
+                    Price: {{ item.price }}<br>
+                    Responses: {{ item.responses }}
 
             </div> <br>
         {% endfor %}
