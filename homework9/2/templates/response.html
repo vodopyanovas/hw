@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <div> <a href="/">Back</a> </div>
+<div class="content">
+    {% from "macros/render_field.html" import render_field %}
+    <form method="POST" action="{{ url_for('index') }}">
+        {{ form.hidden_tag() }}
+        <dl>
+            {% for field in form %}
+                {% if field.id != 'csrf_token' %}
+                    {{ render_field(field) }}
+                {% endif %}
+            {% endfor %}
+        </dl>
+
+        <input type="submit" value="{{ 'Publish' }}" class="btn">
+    </form>
+
+    <div class="posts">
+        {% for item in posts %}
+            <div class="post">
+                <div class="post-text">
+                    Text: {{ item.text }}
+                </div>
+                <div class="post-text">
+                    Phone number: {{ item.phone }}
+                </div>
+
+            </div> <br>
+
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
