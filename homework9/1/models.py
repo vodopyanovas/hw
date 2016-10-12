@@ -12,7 +12,7 @@ class Post(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     name = db.Column(db.String(20), nullable=False)
     birthday = db.Column(db.Date, default=date.today(), nullable=False)
-    age = db.Column(db.Integer, )
+    age = db.Column(db.Integer(3))
 
     def __init__(self, username='', name='', age=0, birthday=None,):
         self.username = username
