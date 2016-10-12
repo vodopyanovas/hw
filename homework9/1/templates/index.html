@@ -7,11 +7,9 @@
     <form method="POST" action="{{ url_for('index') }}">
         {{ form.hidden_tag() }}
         <dl>
-            {% for field in form %}
-                {% if field.id != 'csrf_token' %}
-                    {{ render_field(field) }}
-                {% endif %}
-            {% endfor %}
+            {{ render_field(form.username) }}
+            {{ render_field(form.name) }}
+            {{ render_field(form.birthday) }}
         </dl>
 
         <input type="submit" value="{{ 'Submit' }}" class="btn">
@@ -20,19 +18,16 @@
     <div class="posts">
         {% for item in posts %}
             <div class="post">
-
-                <h5 class="post-title">
+                <h4 class="post-title">
                     Username:{{ item.username }}
-                </h5>
+                </h4>
 
                 <div class="post-text">
                     Name: {{ item.name }}<br>
-                    Birthday: {{ item.birthday }}
+                    Birthday: {{ item.birthday }} <br>
+                    Age:{{ item.age }}
                 </div>
-{#                <h5>Birthday:{{ item.birthday }}</h5>#}
-
-            </div> <br>
-
+            </div>
         {% endfor %}
     </div>
 

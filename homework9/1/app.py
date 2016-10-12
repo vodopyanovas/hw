@@ -6,7 +6,6 @@ from flask_wtf import FlaskForm
 from wtforms_sqlalchemy.orm import model_form
 from sqlalchemy.exc import IntegrityError
 
-
 import config
 
 __author__ = 'Anton Vodopyanov'
@@ -24,7 +23,6 @@ def index():
     post_form_class = model_form(Post, base_class=FlaskForm, db_session=db.session)
 
     if request.method == 'POST':
-
         form = post_form_class(request.form)
         if form.validate():
             try:
@@ -32,6 +30,7 @@ def index():
                 db.session.add(post)
                 db.session.commit()
                 flash('Post created!')
+
             except IntegrityError:
                 db.session.rollback()
                 flash("User {} is already exists".format(post.username))
@@ -42,7 +41,8 @@ def index():
     else:
         form = post_form_class()
 
-    posts = Post.query.all()
+    posts = Post.query.filter(Post.age > 17).all()
+
     return render_template('index.html', form=form, posts=posts)
 
 
