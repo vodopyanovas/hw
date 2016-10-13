@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms_sqlalchemy.orm import model_form
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import or_, and_
 
 import config
 
@@ -40,10 +41,14 @@ def index():
 
     else:
         form = post_form_class()
-    posts = Student.query.all()
-    # posts = Student.query.filter(Student.age > 17).all()
 
-    return render_template('index.html', form=form, posts=posts)
+    posts = Student.query.all()
+    q = Student.query.filter(or_(and_(Student.sex == 'male', Student.age > 21),
+                                 (and_(Student.sex == 'female', Student.faculty == 'Philology'))
+                                 )
+                             )
+    
+    return render_template('index.html', form=form, posts=posts, q=q)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<h3>All rows of database</h3>
 <div class="content">
     {% from "macros/render_field.html" import render_field %}
     <form method="POST" action="{{ url_for('index') }}">
@@ -31,7 +31,21 @@
             </div>
         {% endfor %}
     </div>
-
+        <hr>
+        <h3>Query result</h3>
+        <div class="q">
+            {% for item in q %}
+                <div>
+                    ID:{{  item.studentID }} |
+                    sex:{{ item.sex }} |
+                    name:{{ item.name }} |
+                    last name:{{ item.last_name }} |
+                    date of birth:{{ item.date_of_birth }} |
+                    age:{{ item.age }} |
+                    faculty:{{ item.faculty }} |
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
 </div>
-
 {% endblock %}
