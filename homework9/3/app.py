@@ -46,8 +46,8 @@ def index():
     q = Student.query.filter(or_(and_(Student.sex == 'male', Student.age > 21),
                                  (and_(Student.sex == 'female', Student.faculty == 'Philology'))
                                  )
-                             )
-    
+                             ).order_by(Student.age)
+
     return render_template('index.html', form=form, posts=posts, q=q)
 
 
