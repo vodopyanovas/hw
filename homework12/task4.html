@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Email checker</title>
+
+	<script>
+		function ButtonManager(){				
+			var checker = document.myForm.myText.value;
+			if (/\w+@\w+\.\w+/.test(checker) ){
+				console.log("OK");
+			}
+			else{
+				console.log("Error!");
+			}			
+		}
+	</script>
+</head>
+<body>
+	<form name="myForm">
+		<div>
+			<input type="button" onclick="ButtonManager()" value="Click me">
+			<input name="myText">
+		</div>
+	</form>
+	
+</body>
+</html>

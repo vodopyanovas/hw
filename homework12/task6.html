@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Lorem ipsum</title>
+
+	<script>
+		function getRandomInt(min,max){
+			return Math.floor(Math.random()*(max - min + 1) + min);
+		}		
+
+		function addLorem(){			
+			var text = "LoremIpsum";			
+			var rand = getRandomInt(1,5);		
+
+			document.body.appendChild(newDiv);										
+
+			for (var i=0; i<rand; i++){
+				var newP = document.createElement('p');
+				newDiv.appendChild(newP);
+				newP.appendChild(document.createTextNode(text));
+			}
+		}
+
+		function clearPage(){
+			newDiv.innerHTML="";
+		}
+
+		var newDiv = document.createElement('div');
+	</script>
+</head>
+
+<body>
+	<form name="myForm">
+
+		<div>
+			<input type="button" onclick="addLorem()" value="добавить">	
+			<input type="reset" onclick="clearPage()" value="очистить"> <br>
+		</div>
+		
+	</form>	
+</body>
+</html>

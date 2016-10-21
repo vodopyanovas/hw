@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Images</title>
+</head>
+
+<body>
+<div id="main">
+	<div>
+		<img src="http://placehold.it/150x150" alt="img1" title="Image 1">
+		<img src="http://placehold.it/150x150" alt="img2" >
+		<img src="http://placehold.it/150x150" alt="img3" title="Image 3">
+		<img src="http://placehold.it/150x150" alt="img4" title="Image 4">	
+	</div>
+	<div>
+		<img src="http://placehold.it/150x150" title="Image 5">
+		<img src="http://placehold.it/150x150" alt="img6" title="Image 6">
+		<img src="http://placehold.it/150x150" alt="img7" >
+		<img src="http://placehold.it/150x150" alt="img8" title="Image 8">		
+	</div>
+	<div>
+		<img src="http://placehold.it/150x150" alt="img9" title="Image 9">
+		<img src="http://placehold.it/150x150" alt="img10" title="Image 10">
+		<img src="http://placehold.it/150x150" title="Image 11">
+		<img src="http://placehold.it/150x150" alt="img12" >		
+	</div>
+	<div>
+		<img src="http://placehold.it/150x150" alt="img13" title="Image 13">
+		<img src="http://placehold.it/150x150" alt="img14" title="Image 14">
+		<img src="http://placehold.it/150x150">
+		<img src="http://placehold.it/150x150" alt="img16" title="Image 16">		
+	</div>
+	<hr width="610" size="3" align="left">
+
+	<div id="info">
+		<p id="img_sum">Картинок всего: </p>
+		<p id="pct_alt">Без параметра alt: </p>
+		<p id="pct_title">Без параметра title: </p>
+
+	</div>
+</div>
+
+	<script>
+		var imgs = document.getElementById('main').getElementsByTagName('img');		
+		var all_img = imgs.length;			
+
+		var countAlt = 0;
+		var countTitle = 0;
+
+		for(var i=0;i < all_img ;i++){
+	        if(imgs[i].getAttribute('alt')  == undefined){
+	            countAlt++;
+	        }
+
+	        if(imgs[i].getAttribute('title') == undefined){
+	            countTitle++;
+	        }
+
+	    }
+
+	    console.log(countAlt);
+	    console.log(countTitle);		
+		
+		var qty_alt = countAlt/all_img * 100;    
+		var qty_title = countTitle/all_img * 100;
+
+		document.getElementById('img_sum').appendChild(document.createTextNode(all_img));
+		document.getElementById('pct_alt').appendChild(document.createTextNode(qty_alt+'%'));
+		document.getElementById('pct_title').appendChild(document.createTextNode(qty_title+'%'));
+	</script>
+
+</body>
+</html>
