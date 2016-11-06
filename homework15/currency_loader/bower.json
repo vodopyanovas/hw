@@ -1,0 +1,20 @@
+{
+  "name": "currency_loader",
+  "homepage": "https://github.com/vodopyanovas/hw",
+  "authors": [
+    "Anton Vodopyanov <vodopyanovas@ya.ru>"
+  ],
+  "description": "project with financial chart building",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "techan": "^0.8.0"
+  }
+}

@@ -1,11 +1,7 @@
 from django.shortcuts import render
 import datetime
 import requests
-
 from .forms import MyForm
-# from django.template import RequestContext
-# from django.views.generic import View
-# from django.contrib import messages
 
 
 # Create your views here.
@@ -16,7 +12,6 @@ def index(request):
 
     if request.method == 'POST':
         form = MyForm(request.POST)
-        # if form.is_valid():
         input_date = form.data['date']
         set_date = datetime.datetime.strptime(input_date, "%Y-%m-%d")
         count_date = set_date - delta
